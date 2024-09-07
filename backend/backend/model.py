@@ -43,40 +43,68 @@ class Fashion(nn.Module):
 
     # constructor
     def __init__(self):
+
         super(Fashion, self).__init__()
 
-        # load decoder
+        # instantiate decoder
         self.decoder = Decoder(latent_dim=20, hidden_dim=400, output_dim=28*28)
+
+        # load decoder parameters
         self.decoder.load_state_dict(
             torch.load(
-                os.path.join(CURRENT_DIR, 'weights/vae_decoder.pt'), 
+                os.path.join(CURRENT_DIR, 'weights', 'vae_decoder.pt'), 
                 map_location=torch.device('cpu'),
                 weights_only = True
                 ), 
-                strict=False)
+                strict=True)
 
-        # load mean values for mu and log_var
-        self.mu_mean = torch.load(
-            os.path.join(CURRENT_DIR, 'weights/mu_mean.pt'), 
-            map_location=torch.device('cpu'),
-            weights_only = True
-            )
-        self.log_var_mean = torch.load(
-            os.path.join(CURRENT_DIR, 'weights/log_var_mean.pt'), 
-            map_location=torch.device('cpu'),
-            weights_only = True
-            )
-    
+        # define mu_mean
+        self._mu_mean = None
+
+        # define log_var_mean
+        self._log_var_mean = None
+
+    @property
+    def mu_mean(self):
+        if self._mu_mean is None:
+            print("First time calling mu_mean...")
+            self._mu_mean = torch.load(
+                os.path.join(CURRENT_DIR, 'weights/mu_mean.pt'),
+                map_location=torch.device('cpu'),
+                weights_only = True)
+        return self._mu_mean
+
+    @mu_mean.setter
+    def mu_mean(self, value):
+        self._mu_mean = value
+
+    @property
+    def log_var_mean(self):
+        if self._log_var_mean is None:
+            print("First time calling log_var_mean...")
+            self._log_var_mean = torch.load(
+                os.path.join(CURRENT_DIR, 'weights/log_var_mean.pt'),
+                map_location=torch.device('cpu'),
+                weights_only = True)
+        return self._log_var_mean
+
+    @log_var_mean.setter
+    def log_var_mean(self, value):
+        self._log_var_mean = value
+
     # forward pass
     def forward(self, idx: int, visualize: bool = True):
 
-        # values associated with index
-        mu = self.mu_mean[idx]
-        log_var = self.log_var_mean[idx]
-
-        # generate
-        z = reparametrize(mu, log_var)
         with torch.no_grad():
+
+            # values associated with index
+            mu = self.mu_mean[idx]
+            log_var = self.log_var_mean[idx]
+
+            # generate
+            z = reparametrize(mu, log_var)
+
+            # run through the decoder
             res = self.decoder(z.view(1, -1)).view(1, 28, 28)
 
         if visualize:

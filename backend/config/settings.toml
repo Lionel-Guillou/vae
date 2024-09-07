@@ -1,0 +1,5 @@
+[default]
+RESULTS_DIR = "/Users/lionelguillou/Documents/vae/results"
+
+[production]
+RESULTS_DIR = "/docker_results"
