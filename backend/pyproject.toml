@@ -17,6 +17,9 @@ pillow = "^10.4.0"
 dynaconf = "^3.2.6"
 
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

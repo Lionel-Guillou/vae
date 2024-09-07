@@ -24,13 +24,13 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 
 # Install dependencies
-RUN poetry install --no-root --no-interaction --no-ansi
+RUN poetry install --no-root --no-interaction --no-ansi --no-dev
 
 # Copy the rest of the application code to the container
 COPY . .
 
 # Install project
-RUN poetry install --only-root --no-interaction --no-ansi
+RUN poetry install --only-root --no-interaction --no-ansi --no-dev
 
 # Expose the port that the FastAPI app will run on
 EXPOSE 8000
