@@ -1,12 +1,12 @@
 # import external libraries
-from fastapi import FastAPI, Request
-import uvicorn
-from pydantic import BaseModel
+from fastapi import FastAPI, Request # type: ignore
+import uvicorn # type: ignore
+from pydantic import BaseModel # type: ignore
 import os
-import matplotlib.pyplot as plt
-from PIL import Image
-import numpy as np
-from dynaconf import Dynaconf
+import matplotlib.pyplot as plt # type: ignore
+from PIL import Image # type: ignore
+import numpy as np # type: ignore
+from dynaconf import Dynaconf # type: ignore
 from contextlib import asynccontextmanager
 
 # import modules from package
