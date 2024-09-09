@@ -1,4 +1,4 @@
-# import general libraries
+# import external libraries
 from fastapi import FastAPI, Request
 import uvicorn
 from pydantic import BaseModel
@@ -51,6 +51,10 @@ app = FastAPI(lifespan=lifespan)
 class RequestGenerate(BaseModel):
     idx: int
 
+@app.get("/")
+async def read_status():
+    return {"msg": "I am able to generate Fashion images"}
+
 @app.post("/generate")
 async def generate_request(item: RequestGenerate):
 
@@ -77,7 +81,7 @@ async def generate_request(item: RequestGenerate):
     os.makedirs(config.RESULTS_DIR, exist_ok=True)
     image.save(os.path.join(config.RESULTS_DIR, f"res_{idx}.jpg"))
 
-    return "image generated and saved"
+    return {"msg": "image generated and saved"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

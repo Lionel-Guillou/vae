@@ -19,6 +19,7 @@ dynaconf = "^3.2.6"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
+httpx = "^0.27.2"
 
 [build-system]
 requires = ["poetry-core"]
