@@ -8,7 +8,7 @@ from PIL import Image # type: ignore
 import numpy as np # type: ignore
 from dynaconf import Dynaconf # type: ignore
 from contextlib import asynccontextmanager
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware # type: ignore
 
 # import modules from package
 from backend.model import Fashion
