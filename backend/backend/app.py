@@ -8,6 +8,7 @@ from PIL import Image # type: ignore
 import numpy as np # type: ignore
 from dynaconf import Dynaconf # type: ignore
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 
 # import modules from package
 from backend.model import Fashion
@@ -47,13 +48,26 @@ async def lifespan(app: FastAPI):
 # Initialize the FastAPI app with the lifespan handler
 app = FastAPI(lifespan=lifespan)
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+
 # Define a Pydantic model for the request body
 class RequestGenerate(BaseModel):
     idx: int
 
-@app.get("/")
+@app.get("/welcome")
 async def read_status():
-    return {"msg": "I am able to generate Fashion images"}
+    # Python dictionary, which will be converted to JSON by FastAPI
+    status = {
+        "message": "Welcome to the Fashion Generation API",
+    }
+    return status
 
 @app.post("/generate")
 async def generate_request(item: RequestGenerate):
