@@ -7,6 +7,6 @@ from backend.app import app
 client = TestClient(app)
 
 def test_read_status():
-    response = client.get("/")
+    response = client.get("/welcome")
     assert response.status_code == 200
-    assert response.json() == {"msg": "I am able to generate Fashion images"}
+    assert response.json() == {"message": "Welcome to the Fashion Generation API"}
