@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.field {
+  margin-right: 20px; /* Adjust the value as needed */
+}
+
+.dropdown {
+  margin-left: 10px; /* Adjust the value as needed */
+}
+
+.spaced-value {
+  margin-left: 10px; /* Adjust the value as needed */
+}

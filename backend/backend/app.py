@@ -1,5 +1,7 @@
 # import external libraries
-from fastapi import FastAPI, Request # type: ignore
+from fastapi import FastAPI # type: ignore
+from starlette.responses import StreamingResponse # type: ignore
+import io
 import uvicorn # type: ignore
 from pydantic import BaseModel # type: ignore
 import os
@@ -95,7 +97,16 @@ async def generate_request(item: RequestGenerate):
     os.makedirs(config.RESULTS_DIR, exist_ok=True)
     image.save(os.path.join(config.RESULTS_DIR, f"res_{idx}.jpg"))
 
-    return {"msg": "image generated and saved"}
+    # return {"message": "image generated and saved"}
+
+    # convert PIL Image to jpeg image
+    image_data = io.BytesIO()
+    image.save(image_data, format='JPEG')
+    image_data.seek(0)
+
+    # return the image as a response
+    return StreamingResponse(image_data, media_type="image/jpeg")
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
