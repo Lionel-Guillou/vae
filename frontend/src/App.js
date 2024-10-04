@@ -13,17 +13,20 @@ function App() {
   const [imageSrc, setImageSrc] = useState('');
 
   // Test the connection to the FastAPI server
-  const handleButtonClick = async () => {      
-      fetch('http://localhost:8000/welcome')
+  const handleButtonClick = async () => {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'backend';
+    fetch(`http://${backendUrl}:8000/welcome`)
       .then(response => {
         if (!response.ok) {
           console.log(response);
           throw new Error('Network response was not ok');
         }
+        // setResponse(response.json());
         return response.json();
       })
       .then(data => {
         setResponse(data.message);
+        // setResponse(data);
       })
       .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
@@ -36,8 +39,10 @@ function App() {
     setSelectedCloth(event.target.value);
   };
 
-  const handleGenImage = async () => {     
-    const url = `http://localhost:8000/generate`; 
+  const handleGenImage = async () => {    
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'backend';
+    const url = `http://${backendUrl}:8000/generate`
+    // const url = `http://backend:8000/generate`; 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
